@@ -2,7 +2,8 @@
 
 : "${CM_ONESHOT=0}"
 : "${CM_OWN_CLIPBOARD=0}"
-: "${CM_SYNC_PRIMARY_TO_CLIPBOARD=0}"
+: "${CM_SYNC_PRIMARY_TO_CLIPBOARD=1}"
+: "${CM_SYNC_CLIPBOARD_TO_PRIMARY=1}"
 : "${CM_DEBUG=0}"
 
 : "${CM_MAX_CLIPS:=1000}"
@@ -230,6 +231,10 @@ while true; do
 
     if (( CM_SYNC_PRIMARY_TO_CLIPBOARD )) && (( updated_sel[primary] )); then
         _xsel -o --primary | _xsel -i --clipboard
+    fi
+
+    if (( CM_SYNC_CLIPBOARD_TO_PRIMARY )) && (( updated_sel[clipboard] )); then
+	_xsel -o --clipboard | _xsel -i --primary
     fi
 
     # The cache file may not exist if this is the first run and data is skipped
